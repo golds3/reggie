@@ -1,0 +1,18 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: reggie_take_out  #设置这个项目的名字（默认是项目文件的名字）
+  datasource:
+    url: jdbc:mysql://localhost:13306/reggie?useSSL=false&useUnicode=true&characterEncoding=utf8
+    username: root
+    password: abc123
+    driver-class-name: com.mysql.jdbc.Driver
+mybatis-plus:
+  configuration:
+    #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
