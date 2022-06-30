@@ -17,4 +17,6 @@ public class staticConfig implements WebMvcConfigurer {
 //    }
 
 
+
+
 }
