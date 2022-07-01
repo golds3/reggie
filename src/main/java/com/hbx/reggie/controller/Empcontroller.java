@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -56,6 +58,19 @@ public class Empcontroller {
         //清楚session
         session.removeAttribute("id");
         return R.success("已退出账号");
+    }
+    @PostMapping
+    public R<String> Empadd(HttpServletRequest request, @RequestBody Employee employee){
+        String md5 = DigestUtils.md5DigestAsHex("123456".getBytes());
+        employee.setPassword(md5);
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+        Long id =(Long) request.getSession().getAttribute("id");
+        employee.setCreateUser(id);
+        employee.setUpdateUser(id);
+        empService.save(employee);
+        log.info("保存成功");
+        return R.success("1");
     }
 
 
