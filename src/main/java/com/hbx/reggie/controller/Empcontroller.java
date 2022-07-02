@@ -1,22 +1,19 @@
 package com.hbx.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.hbx.reggie.commenreturn.R;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hbx.reggie.commen.R;
 import com.hbx.reggie.dao.Employee;
 import com.hbx.reggie.service.EmpService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @author 黄柏轩
@@ -71,6 +68,33 @@ public class Empcontroller {
         empService.save(employee);
         log.info("保存成功");
         return R.success("1");
+    }
+
+    @GetMapping("/page")
+    public R<Page<Employee>> EmpLimitShow(int page,int pageSize,String name){
+        Page pageInfo = new Page(page, pageSize);
+        //条件
+        LambdaQueryWrapper<Employee> employeeLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        employeeLambdaQueryWrapper.like(StringUtils.isNotEmpty(name),Employee::getName,name);
+        employeeLambdaQueryWrapper.orderByDesc(Employee::getUpdateTime);
+        empService.page(pageInfo,employeeLambdaQueryWrapper);
+        return R.success(pageInfo);
+    }
+
+    @PutMapping
+    public R<String> EmpUpdate(HttpServletRequest request, @RequestBody Employee emp){
+        Long id = (Long) request.getSession().getAttribute("id");
+        emp.setUpdateUser(id);
+        emp.setUpdateTime(LocalDateTime.now());
+        empService.updateById(emp);
+        return R.success("1");
+    }
+
+    @GetMapping("/{id}")
+    public R<Employee> getOne(@PathVariable Long id){
+        Employee emp = empService.getById(id);
+        return R.success(emp);
+
     }
 
 
