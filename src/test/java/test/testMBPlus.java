@@ -2,7 +2,9 @@ package test;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.hbx.reggie.ReggieApplication;
+import com.hbx.reggie.dao.Dish;
 import com.hbx.reggie.dao.Employee;
+import com.hbx.reggie.service.DishService;
 import com.hbx.reggie.service.EmpService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -19,16 +21,16 @@ import java.util.List;
 @SpringBootTest(classes = ReggieApplication.class)
 public class testMBPlus {
     @Autowired
-    private EmpService empService;
+    private DishService dishService;
     @Test
     public void testlam(){
 //        List<Employee> admin = empService.lambdaQuery().eq(Employee::getUsername, "admin").list();
 //        for (Employee a : admin) {
 //            log.info("{}",a);
 //        }
-        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Employee::getUsername,"admin");
-        Employee one = empService.getOne(queryWrapper);
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Dish::getName,"口味蛇");
+        Dish one = dishService.getOne(queryWrapper);
         log.info("{}",one);
 
 

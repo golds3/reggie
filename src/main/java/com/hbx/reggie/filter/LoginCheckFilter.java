@@ -1,6 +1,7 @@
 package com.hbx.reggie.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.hbx.reggie.commen.BaseContext;
 import com.hbx.reggie.commen.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
@@ -33,7 +34,9 @@ public class LoginCheckFilter implements Filter {
             return;
         }
         //拦截，判断是否已经登陆
-        if(request.getSession().getAttribute("id")!=null){
+        Long id =(Long) request.getSession().getAttribute("id");
+        BaseContext.setId(id);
+        if(id!=null){
             log.info("拦截路径{}，已登录，放行",requestURI);
             filterChain.doFilter(request,response);
         }

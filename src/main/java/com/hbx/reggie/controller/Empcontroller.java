@@ -60,11 +60,11 @@ public class Empcontroller {
     public R<String> Empadd(HttpServletRequest request, @RequestBody Employee employee){
         String md5 = DigestUtils.md5DigestAsHex("123456".getBytes());
         employee.setPassword(md5);
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-        Long id =(Long) request.getSession().getAttribute("id");
-        employee.setCreateUser(id);
-        employee.setUpdateUser(id);
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
+//        Long id =(Long) request.getSession().getAttribute("id");
+//        employee.setCreateUser(id);
+//        employee.setUpdateUser(id);
         empService.save(employee);
         log.info("保存成功");
         return R.success("1");
@@ -83,9 +83,9 @@ public class Empcontroller {
 
     @PutMapping
     public R<String> EmpUpdate(HttpServletRequest request, @RequestBody Employee emp){
-        Long id = (Long) request.getSession().getAttribute("id");
-        emp.setUpdateUser(id);
-        emp.setUpdateTime(LocalDateTime.now());
+//        Long id = (Long) request.getSession().getAttribute("id");
+//        emp.setUpdateUser(id);
+//        emp.setUpdateTime(LocalDateTime.now());
         empService.updateById(emp);
         return R.success("1");
     }
