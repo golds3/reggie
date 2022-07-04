@@ -2,7 +2,7 @@ package com.hbx.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hbx.reggie.commen.R;
+import com.hbx.reggie.common.R;
 import com.hbx.reggie.dao.Category;
 import com.hbx.reggie.service.CateService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +38,12 @@ public class CateController {
     public R<String> deleCategory(Long id){
         cateService.remove(id);
         return R.success("删除成功");
+    }
+
+    @PutMapping
+    public R<String> updateCategory(@RequestBody Category category){
+        cateService.updateById(category);
+        return R.success("修改成功");
     }
 
 

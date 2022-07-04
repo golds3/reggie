@@ -1,6 +1,6 @@
 package com.hbx.reggie.exception;
 
-import com.hbx.reggie.commen.R;
+import com.hbx.reggie.common.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

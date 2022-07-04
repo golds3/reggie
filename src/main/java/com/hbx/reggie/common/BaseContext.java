@@ -1,4 +1,4 @@
-package com.hbx.reggie.commen;
+package com.hbx.reggie.common;
 
 /**
  * @author 黄柏轩

@@ -1,6 +1,6 @@
 package com.hbx.reggie.config;
 
-import com.hbx.reggie.commen.JacksonObjectMapper;
+import com.hbx.reggie.common.JacksonObjectMapper;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;

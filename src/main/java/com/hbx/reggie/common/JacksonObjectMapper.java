@@ -1,4 +1,4 @@
-package com.hbx.reggie.commen;
+package com.hbx.reggie.common;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

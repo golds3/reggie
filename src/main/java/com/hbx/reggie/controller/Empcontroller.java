@@ -2,7 +2,7 @@ package com.hbx.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hbx.reggie.commen.R;
+import com.hbx.reggie.common.R;
 import com.hbx.reggie.dao.Employee;
 import com.hbx.reggie.service.EmpService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,6 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
 
 /**
  * @author 黄柏轩
