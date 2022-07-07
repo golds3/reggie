@@ -49,7 +49,7 @@ public class CateController {
     }
     @GetMapping("/list")
     public R<List<Category>> listCategory(Category category){
-        log.info("菜品分类展示");
+        log.info("菜品、套餐分类展示");
         LambdaQueryWrapper<Category> categoryLambdaQueryWrapper = new LambdaQueryWrapper<>();
         categoryLambdaQueryWrapper.eq(Category::getType,category.getType());
         categoryLambdaQueryWrapper.orderByDesc(Category::getSort).orderByDesc(Category::getUpdateTime);
