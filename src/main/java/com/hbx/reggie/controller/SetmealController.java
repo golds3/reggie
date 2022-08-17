@@ -3,6 +3,7 @@ package com.hbx.reggie.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hbx.reggie.common.R;
+import com.hbx.reggie.dao.Category;
 import com.hbx.reggie.dao.Setmeal;
 import com.hbx.reggie.dto.SetmealDto;
 import com.hbx.reggie.service.CateService;
@@ -29,6 +30,15 @@ public class SetmealController {
     private SetMealService setMealService;
     @Autowired
     private CateService cateService;
+
+    @GetMapping("/list")
+    public R<List<Setmeal>> list(Setmeal setmeal){
+        LambdaQueryWrapper<Setmeal> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(setmeal.getCategoryId()!=null,Setmeal::getCategoryId,setmeal.getCategoryId());
+        wrapper.orderByDesc(Setmeal::getCreateTime);
+        List<Setmeal> list = setMealService.list(wrapper);
+        return R.success(list);
+    }
 
     @PostMapping
     public R<String> saveDishAndSetmeal(@RequestBody SetmealDto setmealDto){

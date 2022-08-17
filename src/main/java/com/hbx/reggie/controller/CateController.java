@@ -51,7 +51,9 @@ public class CateController {
     public R<List<Category>> listCategory(Category category){
         log.info("菜品、套餐分类展示");
         LambdaQueryWrapper<Category> categoryLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        categoryLambdaQueryWrapper.eq(Category::getType,category.getType());
+        if(category.getId()!=null){
+            categoryLambdaQueryWrapper.eq(Category::getType,category.getType());
+        }
         categoryLambdaQueryWrapper.orderByDesc(Category::getSort).orderByDesc(Category::getUpdateTime);
         List<Category> list = cateService.list(categoryLambdaQueryWrapper);
         return R.success(list);

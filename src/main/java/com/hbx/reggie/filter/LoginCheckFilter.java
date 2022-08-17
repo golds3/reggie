@@ -26,18 +26,26 @@ public class LoginCheckFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String requestURI = request.getRequestURI();
-        String[] uris ={"/employee/login","/employee/logout","/backend/**","/front/**"};
+        String[] uris ={"/employee/login","/employee/logout","/backend/**","/front/**","/user/sendMsg","/user/login"};
         //判断是否为不需要拦截的路径
         if(check(uris,requestURI)){
             log.info("路径{}不需要处理，放行",requestURI);
             filterChain.doFilter(request,response);
             return;
         }
-        //拦截，判断是否已经登陆
+        //拦截，判断后端是否已经登陆
         Long id =(Long) request.getSession().getAttribute("id");
-        BaseContext.setId(id);
+        //判断移动端是否登陆
+        Long usrId =(Long) request.getSession().getAttribute("usrId");
+        log.info("拦截器得到usrId{}",usrId);
         if(id!=null){
             log.info("拦截路径{}，已登录，放行",requestURI);
+            BaseContext.setId(id);
+            filterChain.doFilter(request,response);
+        }
+        else if(usrId!=null){
+            log.info("拦截路径{}，已登录，放行",requestURI);
+            BaseContext.setId(usrId);
             filterChain.doFilter(request,response);
         }
         else {
