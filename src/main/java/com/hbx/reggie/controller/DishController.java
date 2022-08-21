@@ -15,10 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -36,6 +39,8 @@ public class DishController {
     private CateService cateService;
     @Autowired
     private DishFlavorService dishFlavorService;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @PostMapping
     public R<String> saveDish(@RequestBody DishDto dishDto){
@@ -78,6 +83,12 @@ public class DishController {
     @PutMapping
     public R<String> updateDish(@RequestBody DishDto dishDto){
         dishService.updateDishAndFlavor(dishDto);
+        //清楚所有缓存数据
+//        Set keys = redisTemplate.keys("dish*");
+//        redisTemplate.delete(keys);
+        //精确清理，只清理数据变化的那一类菜品缓存
+        String key = "dish"+dishDto.getCategoryId()+":status1";
+        redisTemplate.delete(key);
         return R.success("菜品修改成功");
     }
 
@@ -94,6 +105,16 @@ public class DishController {
 //    }
     @GetMapping("/list")
     public R<List<DishDto>> listDish(Dish dish) {
+        //redis 的key
+        String key = "dish"+dish.getCategoryId()+":status"+dish.getStatus();
+        //从缓存中获取数据
+        List<DishDto> dishDtoList = (List<DishDto>) redisTemplate.opsForValue().get(key);
+        //判断是否缓存中是否有
+        if(dishDtoList!=null){
+            //有数据直接返回，不需要mysql
+            return R.success(dishDtoList);
+        }
+
         LambdaQueryWrapper<Dish> dishLambdaQueryWrapper = new LambdaQueryWrapper<>();
         dishLambdaQueryWrapper.eq(Dish::getCategoryId, dish.getCategoryId());
         dishLambdaQueryWrapper.eq(Dish::getStatus, 1);
@@ -109,6 +130,9 @@ public class DishController {
             dishDto.setFlavors(flavors);
             return dishDto;
         }).collect(Collectors.toList());
+
+        //保存一份数据到redis
+        redisTemplate.opsForValue().set(key,list,60, TimeUnit.MINUTES);
         return R.success(list);
     }
 

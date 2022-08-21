@@ -64,7 +64,10 @@
                     if (regex.test(this.form.phone)) {
                         this.msgFlag = false
                         // this.form.code = (Math.random()*1000000).toFixed(0)
-                        sendMsgApi({phone:this.form.phone})
+                        const res =sendMsgApi({phone:this.form.phone})
+                        if(res.code==0){
+                            this.$notify({ type:'warning', message:res.msg});
+                        }
                     }else{
                         this.msgFlag = true
                     }

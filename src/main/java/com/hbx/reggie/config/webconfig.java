@@ -18,6 +18,5 @@ public class webconfig implements WebMvcConfigurer {
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
         mappingJackson2HttpMessageConverter.setObjectMapper(new JacksonObjectMapper());
-        converters.add(0,mappingJackson2HttpMessageConverter);
     }
 }
